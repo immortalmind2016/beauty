@@ -19,7 +19,11 @@ const Settings = new Schema(
             enum: Object.values(SettingType)
         },
         htmlDescription: String,
-        brands: Array,
+        brands: [
+            {
+                name: { type: String, unique: true }
+            }
+        ],
         categories: [
             {
                 name: { type: String, unique: true },

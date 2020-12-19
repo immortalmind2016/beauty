@@ -16,11 +16,7 @@ const setSettings: RequestHandler = async (req, res, err) => {
         const setting = await Settings.findOneAndUpdate(
             { name },
             {
-                ...(name.toLowerCase() == 'categories'
-                    ? {
-                          $addToSet: { categories: { $each: req.body.categories } }
-                      }
-                    : { ...req.body })
+                ...req.body
             },
             { upsert: true, new: true }
         );
