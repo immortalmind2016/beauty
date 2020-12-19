@@ -21,8 +21,9 @@ const Cart = new Schema<CartSchema>(
             }
         ],
         isOrdered: {
-            type: Boolean,
-            default: CartStatus.NOTCHECKED
+            type: Number,
+            default: CartStatus.NOTCHECKED,
+            enum: Object.values(CartStatus)
         },
         totalMoney: Number
     },

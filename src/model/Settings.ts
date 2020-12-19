@@ -19,7 +19,7 @@ const Cart = new Schema<CartSchema>(
             enum: Object.values(SettingType)
         },
         htmlDescription: String,
-        brands: [String],
+        brands: Array,
         categories: [
             {
                 name: String,

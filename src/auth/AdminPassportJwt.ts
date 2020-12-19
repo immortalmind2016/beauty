@@ -1,7 +1,7 @@
 import { Strategy as JwtStrategy, ExtractJwt, StrategyOptions } from 'passport-jwt';
 import passport from 'passport';
-import User from '../model/User';
 import config from '../config';
+import Admin from '../model/Admin';
 var opts: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.JWT_SECRET
@@ -9,7 +9,7 @@ var opts: StrategyOptions = {
 
 passport.use(
     new JwtStrategy(opts, function (jwt_payload, done) {
-        User.findOne({ _id: jwt_payload._id }, function (err, user) {
+        Admin.findOne({ _id: jwt_payload._id }, function (err, user) {
             if (err) {
                 return done(err, false);
             }

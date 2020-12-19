@@ -1,42 +1,27 @@
 import { Schema, Document, model } from 'mongoose';
 import bcrypt from 'bcrypt';
-export interface UserSchema {
+export interface AdminSchema {
     name: String;
-    phone: String;
     email: String;
     password: String;
     type?: UserType;
-    isVerfied?: Boolean;
-    isFacebook?: Boolean;
     salt?: String;
     createdAt?: String;
     updatedAt?: String;
 }
 enum UserType {
-    USER = 0,
-    DOCTOR = 1,
-    INFLUENCER = 2
+    ADMIN = 0
 }
-const User: Schema = new Schema<UserDocument>(
+const Admin: Schema = new Schema<AdminDocument>(
     {
         name: { type: String, required: true },
-        phone: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
         type: {
             type: Number,
-            default: UserType.USER,
+            default: UserType.ADMIN,
             required: true
-        },
-        isVerfied: {
-            type: Boolean,
-            default: 0
-        },
-        isFacebook: {
-            type: Boolean,
-            default: 0
-        },
-        salt: String
+        }
     },
     {
         timestamps: true,
@@ -50,7 +35,7 @@ const User: Schema = new Schema<UserDocument>(
     }
 );
 //HOOK
-User.pre<any>('save', async function (next) {
+Admin.pre<any>('save', async function (next) {
     // if(this.isModified("password")){
     try {
         this.salt = await bcrypt.genSalt();
@@ -61,7 +46,7 @@ User.pre<any>('save', async function (next) {
     //}
     next();
 });
-User.methods.checkPassword = async function (textPassword) {
+Admin.methods.checkPassword = async function (textPassword) {
     //.methods called on instance
     console.log('PASSWORD', this.password);
     const hashed = await bcrypt.hash(textPassword, this.salt);
@@ -70,7 +55,7 @@ User.methods.checkPassword = async function (textPassword) {
     return hashed == this.password;
 };
 
-export interface UserDocument extends Document, UserSchema {
+export interface AdminDocument extends Document, AdminSchema {
     checkPassword(textPassword: string): boolean;
 }
-export default model<UserDocument>('User', User);
+export default model<AdminDocument>('Admin', Admin);

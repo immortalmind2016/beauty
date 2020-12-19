@@ -5,6 +5,7 @@ import Jwt from 'jsonwebtoken';
 import { sendMessage } from '../utils/sendgrid';
 import config from '../config';
 import { json } from 'body-parser';
+import path from 'path';
 const logger = getLogger('UserController', 'info');
 const signUp: RequestHandler = async (req: Request, res, err) => {
     try {
@@ -23,7 +24,7 @@ const signUp: RequestHandler = async (req: Request, res, err) => {
             try {
                 await sendMessage(
                     email,
-                    `${config.URL}/verify-email?token=${emailToken}`,
+                    `${config.URL}/user/verify-email?token=${emailToken}`,
                     user.name
                 );
 
@@ -47,10 +48,10 @@ interface LoginType {
 }
 const login: RequestHandler = async (req, res, err) => {
     try {
-        const { email, password }: LoginType = req.user as LoginType;
-        const user: any = await User.findOne({ email, password });
+        const { email, password }: LoginType = req.body as LoginType;
+        const user: UserDocument = await User.findOne({ email });
         if (user) {
-            if (user.checkPassword(password)) {
+            if (user.checkPassword(password) && user.isVerfied) {
                 const jwt = await Jwt.sign(
                     {
                         _id: user.id,
@@ -60,6 +61,8 @@ const login: RequestHandler = async (req, res, err) => {
                     config.JWT_SECRET
                 );
                 return res.json({ access_token: jwt });
+            } else if (user.checkPassword(password) && !user.isVerfied) {
+                return res.status(401).json({ error: 'Email is not verified' });
             }
         }
 
@@ -81,4 +84,18 @@ const getUserData: RequestHandler = async (req, res, err) => {
         res.status(501).json({ error: e?.message });
     }
 };
-export { signUp, login, getUserData };
+const verifyEmail: RequestHandler = async (req, res, err) => {
+    try {
+        let token;
+        token = req.query.token;
+        type data = { email?: string };
+        console.log(req.query);
+        const data: data = Jwt.verify(token, config.JWT_SECRET) as data;
+        await User.findOneAndUpdate({ email: data.email }, { $set: { isVerfied: true } }, {});
+        res.sendFile(path.join(__dirname, '../view/verify.html'));
+    } catch (e) {
+        logger.error(e?.message);
+        res.status(501).json({ error: e?.message });
+    }
+};
+export { signUp, login, getUserData, verifyEmail };

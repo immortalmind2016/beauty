@@ -1,6 +1,8 @@
 import express from 'express';
 import { getLogger } from '@npm-immortal-user/utils';
 import user from './route/user.route';
+import admin from './route/admin.route';
+
 import config from './config';
 import bodyParser from 'body-parser';
 import './utils/sendgrid';
@@ -10,6 +12,8 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use('/user', user);
+app.use('/admin', admin);
+
 const PORT = process.env.PORT || 5000;
 //const logger = getLogger('server', 'info');
 //logger.info('Application will start');

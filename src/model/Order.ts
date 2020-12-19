@@ -40,17 +40,17 @@ const Order = new Schema<OrderSchema>(
             lng: Number
         },
         placeType: {
-            type: Boolean,
+            type: Number,
             enum: Object.values(PlaceType)
         },
         backupPhone: String,
         note: String,
         payment: {
-            type: Boolean,
+            type: Number,
             enum: Object.values(PaymentType)
         },
         status: {
-            type: Boolean,
+            type: Number,
             enum: Object.values(OrderStatus),
             default: OrderStatus.PENDEING
         }

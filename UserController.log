@@ -21,3 +21,12 @@
 [2020-12-19T02:08:46.777] [ERROR] UserController - E11000 duplicate key error collection: beauty.users index: email_1 dup key: { email: "mohamedsalah.software@gmail.com" }
 [2020-12-19T02:09:17.192] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
 [2020-12-19T02:10:45.026] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T02:25:09.765] [ERROR] UserController - User validation failed: name: Path `name` is required., email: Path `email` is required., password: Path `password` is required., phone: Path `phone` is required.
+[2020-12-19T02:25:33.339] [ERROR] UserController - User validation failed: phone: Path `phone` is required.
+[2020-12-19T02:25:57.672] [ERROR] UserController - E11000 duplicate key error collection: beauty.users index: email_1 dup key: { email: "mohamedsalah.software@gmail.com" }
+[2020-12-19T02:26:05.731] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T02:50:45.992] [ERROR] UserController - Cannot destructure property 'token' of 'req.body.query' as it is undefined.
+[2020-12-19T02:52:25.194] [ERROR] UserController - jwt must be a string
+[2020-12-19T02:52:48.364] [ERROR] UserController - jwt must be a string
+[2020-12-19T02:56:47.588] [ERROR] UserController - Cannot destructure property 'email' of 'req.user' as it is undefined.
+[2020-12-19T03:38:07.054] [ERROR] UserController - User validation failed: name: Path `name` is required., email: Path `email` is required., password: Path `password` is required., phone: Path `phone` is required.
