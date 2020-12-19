@@ -51,17 +51,19 @@ const login: RequestHandler = async (req, res, err) => {
         const { email, password }: LoginType = req.body as LoginType;
         const user: UserDocument = await User.findOne({ email });
         if (user) {
-            if (user.checkPassword(password) && user.isVerfied) {
+            const isSamePassword = await user.checkPassword(password);
+            if (isSamePassword && user.isVerfied) {
                 const jwt = await Jwt.sign(
                     {
                         _id: user.id,
                         email: user.email,
-                        name: user.name
+                        name: user.name,
+                        type: user.type
                     },
                     config.JWT_SECRET
                 );
                 return res.json({ access_token: jwt });
-            } else if (user.checkPassword(password) && !user.isVerfied) {
+            } else if (isSamePassword && !user.isVerfied) {
                 return res.status(401).json({ error: 'Email is not verified' });
             }
         }

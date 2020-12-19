@@ -12,7 +12,7 @@ export interface UserSchema {
     createdAt?: String;
     updatedAt?: String;
 }
-enum UserType {
+export enum UserType {
     USER = 0,
     DOCTOR = 1,
     INFLUENCER = 2

@@ -1,6 +1,19 @@
 import { Schema, Document, model, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
-export interface ProductSchema extends Document {}
+export interface ProductSchema {
+    brand: String;
+    image: String;
+    price: String;
+    sliderImages: String[];
+    name: String;
+    description: String;
+    rates?: String;
+    isRecommended?: RecommonedType;
+    categorie: {
+        name: String;
+        image: String;
+    };
+}
 enum RecommonedType {
     NO = 0,
     YES = 1
@@ -10,7 +23,7 @@ const Product = new Schema<ProductSchema>(
         brand: String,
         image: String,
         price: String,
-        sliderImages: [String],
+        sliderImages: Array,
         name: String,
         description: String,
         rates: String,
@@ -25,5 +38,5 @@ const Product = new Schema<ProductSchema>(
     },
     { timestamps: true }
 );
-
-export default model<ProductSchema>('Product', Product);
+export interface ProductDocument extends ProductSchema, Document {}
+export default model<ProductDocument>('Product', Product);
