@@ -12,7 +12,7 @@ enum SettingType {
     EXCHANGEANDRETURN,
     DELIVERYCOST
 }
-const Cart = new Schema<CartSchema>(
+const Settings = new Schema(
     {
         name: {
             type: String,
@@ -22,7 +22,7 @@ const Cart = new Schema<CartSchema>(
         brands: Array,
         categories: [
             {
-                name: String,
+                name: { type: String, unique: true },
                 image: String
             }
         ]
@@ -30,4 +30,4 @@ const Cart = new Schema<CartSchema>(
     { timestamps: true }
 );
 
-export default model<CartSchema>('Cart', Cart);
+export default model('Settings', Settings);

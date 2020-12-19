@@ -3,6 +3,7 @@ import { getLogger } from '@npm-immortal-user/utils';
 import user from './route/user.route';
 import admin from './route/admin.route';
 import product from './route/product.route';
+import settings from './route/settings.route';
 
 import config from './config';
 import bodyParser from 'body-parser';
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use('/api/user', user);
 app.use('/api/admin', admin);
 app.use('/api/product', product);
+app.use('/api/settings', settings);
 
 const PORT = process.env.PORT || 5000;
 //const logger = getLogger('server', 'info');

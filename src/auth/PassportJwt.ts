@@ -7,7 +7,12 @@ var opts: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.JWT_SECRET
 };
-
+export interface UserReq {
+    _id?: string;
+    email?: string;
+    name?: string;
+    type?: string;
+}
 passport.use(
     'user-rule',
     new JwtStrategy(opts, function (jwt_payload, done) {

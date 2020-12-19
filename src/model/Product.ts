@@ -1,9 +1,10 @@
 import { Schema, Document, model, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { RequestHandler } from 'express';
 export interface ProductSchema {
     brand: String;
     image: String;
-    price: String;
+    price: Number;
     sliderImages: String[];
     name: String;
     description: String;
@@ -14,29 +15,31 @@ export interface ProductSchema {
         image: String;
     };
 }
-enum RecommonedType {
+export enum RecommonedType {
     NO = 0,
     YES = 1
 }
 const Product = new Schema<ProductSchema>(
     {
-        brand: String,
-        image: String,
-        price: String,
+        brand: { type: String },
+        image: { type: String, required: true },
+        price: { type: Number, required: true },
         sliderImages: Array,
-        name: String,
+        name: { type: String, required: true },
         description: String,
         rates: String,
         isRecommended: {
+            type: Boolean,
             default: RecommonedType.NO,
             enum: Object.values(RecommonedType)
         },
         categorie: {
-            name: String,
-            image: String
+            type: Types.ObjectId,
+            ref: 'Settings.categories'
         }
     },
     { timestamps: true }
 );
+
 export interface ProductDocument extends ProductSchema, Document {}
 export default model<ProductDocument>('Product', Product);
