@@ -1,0 +1,23 @@
+[2020-12-18T23:50:23.077] [ERROR] UserController - User validation failed: email: Path `email` is required.
+[2020-12-18T23:51:52.543] [ERROR] UserController - User validation failed: password: Path `password` is required., email: Path `email` is required., phone: Path `phone` is required., name: Path `name` is required.
+[2020-12-18T23:52:20.025] [ERROR] UserController - User validation failed: password: Path `password` is required., email: Path `email` is required., phone: Path `phone` is required., name: Path `name` is required.
+[2020-12-18T23:52:41.735] [ERROR] UserController - User validation failed: password: Path `password` is required., email: Path `email` is required., phone: Path `phone` is required., name: Path `name` is required.
+[2020-12-19T01:09:15.800] [ERROR] UserController - Cannot destructure property `name` of 'undefined' or 'null'.
+[2020-12-19T01:10:38.615] [ERROR] UserController - Cannot destructure property `name` of 'undefined' or 'null'.
+[2020-12-19T01:11:20.799] [ERROR] UserController - Cannot destructure property `name` of 'undefined' or 'null'.
+[2020-12-19T01:12:40.596] [ERROR] UserController - User validation failed: phone: Path `phone` is required.
+[2020-12-19T01:12:59.150] [ERROR] UserController - Operation `users.insertOne()` buffering timed out after 10000ms
+[2020-12-19T01:13:21.915] [ERROR] UserController - Operation `users.insertOne()` buffering timed out after 10000ms
+[2020-12-19T01:13:40.479] [ERROR] UserController - Operation `users.insertOne()` buffering timed out after 10000ms
+[2020-12-19T01:30:43.216] [ERROR] UserController - E11000 duplicate key error collection: beauty>.users index: email_1 dup key: { email: "mohamedsalah.software@gmail.com" }
+[2020-12-19T01:38:05.754] [INFO] UserController - Verficiation Email sent to immortal.mind2016@gmail.com
+[2020-12-19T01:40:31.967] [INFO] UserController - Verficiation Email sent to immortal.mind2016@gmail.com
+[2020-12-19T01:41:54.178] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T01:43:20.479] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T01:46:59.318] [ERROR] UserController - E11000 duplicate key error collection: beauty.users index: email_1 dup key: { email: "mohamedsalah.software@gmail.com" }
+[2020-12-19T01:47:57.292] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T01:49:46.103] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T02:03:28.593] [ERROR] UserController - E11000 duplicate key error collection: beauty.users index: email_1 dup key: { email: "mohamedsalah.software@gmail.com" }
+[2020-12-19T02:08:46.777] [ERROR] UserController - E11000 duplicate key error collection: beauty.users index: email_1 dup key: { email: "mohamedsalah.software@gmail.com" }
+[2020-12-19T02:09:17.192] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
+[2020-12-19T02:10:45.026] [INFO] UserController - Verficiation Email sent to mohamedsalah.software@gmail.com
