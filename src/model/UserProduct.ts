@@ -11,6 +11,10 @@ enum RecommonedType {
 }
 const UserProduct = new Schema(
     {
+        isApproved: {
+            type: Boolean,
+            default: false
+        },
         user: {
             type: 'ObjectId',
             ref: 'User'
