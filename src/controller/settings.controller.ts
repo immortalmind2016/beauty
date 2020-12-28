@@ -1,7 +1,7 @@
 import { getLogger } from '@npm-immortal-user/utils/module';
 import { RequestHandler } from 'express';
 import Settings from '../model/Settings';
-const logger = getLogger('settingsController', 'info');
+import { logger } from '../utils/logger';
 const setSettings: RequestHandler = async (req, res, err) => {
     try {
         const { name } = req.body;

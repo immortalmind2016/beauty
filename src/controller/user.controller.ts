@@ -6,7 +6,7 @@ import { sendMessage } from '../utils/sendgrid';
 import config from '../config';
 import { json } from 'body-parser';
 import path from 'path';
-const logger = getLogger('UserController', 'info');
+import { logger } from '../utils/logger';
 const signUp: RequestHandler = async (req: Request, res, err) => {
     try {
         const { name, email, password, phone, type } = req.body as UserSchema;

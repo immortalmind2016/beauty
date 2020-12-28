@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 import { UserReq } from '../auth/PassportJwt';
 import Product, { ProductDocument, ProductSchema, RecommonedType } from '../model/Product';
 import UserProduct from '../model/UserProduct';
-const logger = getLogger('product', 'info');
+import { logger } from '../utils/logger';
 const create: RequestHandler = async (req, res, err) => {
     try {
         const {
