@@ -13,7 +13,7 @@ import {
 import { UserType } from "../model/User";
 const router = express.Router();
 //PassportJwt.authenticate(['user-rule', 'admin-rule'], { session: false })
-router.get("/all/:page", getAll);
+router.get("/page/:page", getAll);
 
 router.patch(
   "/",
