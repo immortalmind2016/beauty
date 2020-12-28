@@ -1,8 +1,8 @@
-export const logger = (name, level) => {
-  return {
-    log: (msg) => {},
-    error: (msg) => {},
-  };
+export const logger = {
+  error: (msg) => {},
+  log: (msg) => {},
+  info: (msg) => {},
+  warn: (msg) => {},
 };
 
 //logger.log
