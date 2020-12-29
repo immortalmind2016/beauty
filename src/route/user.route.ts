@@ -9,7 +9,7 @@ import PassportJwt from "../auth/PassportJwt";
 const router = express.Router();
 
 router.post("/signup", signUp);
-router.get("/login", login);
+router.post("/login", login);
 router.get(
   "/",
   PassportJwt.authenticate("user-rule", { session: false }),
