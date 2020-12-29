@@ -2,8 +2,10 @@ import { Schema, Document, model, Types } from "mongoose";
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 export interface PostSchema {
-  image: string;
-  video: string;
+  image?: String;
+  video?: String;
+  type: PostType;
+  user: String;
 }
 export enum PostType {
   VIDEO = 0,
@@ -11,7 +13,6 @@ export enum PostType {
 }
 const Post = new Schema<PostSchema>(
   {
-    brand: { type: String },
     image: { type: String, required: true },
     video: String,
     type: {
@@ -21,7 +22,7 @@ const Post = new Schema<PostSchema>(
     },
     user: {
       type: Types.ObjectId,
-      ref: "String",
+      ref: "User",
     },
   },
   { timestamps: true }

@@ -5,6 +5,7 @@ import admin from "./route/admin.route";
 import product from "./route/product.route";
 import settings from "./route/settings.route";
 import cart from "./route/cart.route";
+import post from "./route/post.route";
 
 import config from "./config";
 import bodyParser from "body-parser";
@@ -56,6 +57,7 @@ app.use("/api/admin", admin);
 app.use("/api/cart", cart);
 app.use("/api/product", product);
 app.use("/api/settings", settings);
+app.use("/api/post", post);
 
 const PORT = process.env.PORT || 5000;
 //const logger = getLogger('server', 'info');
