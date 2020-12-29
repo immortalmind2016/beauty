@@ -13,7 +13,7 @@ const create: RequestHandler = async (req, res, err) => {
   try {
     const {
       brand,
-      categorie,
+      category,
       name,
       description,
       image,
@@ -23,7 +23,7 @@ const create: RequestHandler = async (req, res, err) => {
     }: ProductSchema = req.body;
     const newProduct: ProductSchema = {
       brand,
-      categorie,
+      category,
       name,
       description,
       image,
@@ -40,7 +40,7 @@ const create: RequestHandler = async (req, res, err) => {
 };
 const deleteOne: RequestHandler = async (req, res, err) => {
   try {
-    await Product.deleteOne({ _id: req.body.id });
+    await Product.deleteOne({ _id: req.params.productId });
     res.json({ sucess: true });
   } catch (e) {
     logger.error(e?.message);

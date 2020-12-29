@@ -9,13 +9,16 @@
     "build": "yarn build:ts",
     "build:ts": "tsc -p tsconfig.json",
     "watch": "concurrently yarn:watch:*",
-    "watch:ts": "nodemon -w src -e ts -x yarn start:dev"
+    "watch:ts": "nodemon -w src -e ts -x yarn start:dev",
+    "db:clean":"ts-node src/test/clear.ts",
+    "db:gen":"ts-node src/test/generator.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@npm-immortal-user/utils": "^0.0.4",
     "@sendgrid/mail": "^7.4.0",
+    "@types/faker": "^5.1.5",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/passport-jwt": "^3.0.3",
     "bcrypt": "^5.0.0",
@@ -24,6 +27,7 @@
     "dotenv": "^8.2.0",
     "envalid": "^6.0.2",
     "express": "^4.17.1",
+    "faker": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
     "passport": "^0.4.1",

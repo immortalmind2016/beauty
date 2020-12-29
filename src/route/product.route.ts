@@ -21,7 +21,7 @@ router.patch(
   edit
 );
 router.delete(
-  "/",
+  "/:productId",
   PassportJwt.authenticate("admin-rule", { session: false }),
   deleteOne
 );
