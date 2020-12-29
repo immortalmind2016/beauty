@@ -13,13 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyEmail = exports.getUserData = exports.login = exports.signUp = void 0;
-const module_1 = require("@npm-immortal-user/utils/module");
 const User_1 = __importDefault(require("../model/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const sendgrid_1 = require("../utils/sendgrid");
 const config_1 = __importDefault(require("../config"));
 const path_1 = __importDefault(require("path"));
-const logger = module_1.getLogger('UserController', 'info');
+const logger_1 = require("../utils/logger");
 const signUp = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
@@ -28,13 +27,13 @@ const signUp = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
         const user = yield new User_1.default(newUser).save();
         const emailToken = jsonwebtoken_1.default.sign({
             email,
-            _id: user._id
+            _id: user._id,
         }, config_1.default.JWT_SECRET);
         let emailSent = false;
         while (!emailSent) {
             try {
                 yield sendgrid_1.sendMessage(email, `${config_1.default.URL}/user/verify-email?token=${emailToken}`, user.name);
-                logger.info(`Verficiation Email sent to ${email}`);
+                logger_1.logger.info(`Verficiation Email sent to ${email}`);
                 emailSent = true;
             }
             catch (e) {
@@ -45,7 +44,7 @@ const signUp = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(200).json({ success: true });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -61,18 +60,18 @@ const login = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () 
                     _id: user.id,
                     email: user.email,
                     name: user.name,
-                    type: user.type
+                    type: user.type,
                 }, config_1.default.JWT_SECRET);
                 return res.json({ access_token: jwt });
             }
             else if (isSamePassword && !user.isVerfied) {
-                return res.status(401).json({ error: 'Email is not verified' });
+                return res.status(401).json({ error: "Email is not verified" });
             }
         }
-        return res.status(401).json({ error: 'User not found' });
+        return res.status(401).json({ error: "User not found" });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -82,11 +81,11 @@ const getUserData = (req, res, err) => __awaiter(void 0, void 0, void 0, functio
         const { _id } = req.user;
         const user = yield User_1.default.findOne({ _id });
         if (!user)
-            return res.status(401).json({ error: 'User not found' });
+            return res.status(401).json({ error: "User not found" });
         return res.json({ user });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -98,10 +97,10 @@ const verifyEmail = (req, res, err) => __awaiter(void 0, void 0, void 0, functio
         console.log(req.query);
         const data = jsonwebtoken_1.default.verify(token, config_1.default.JWT_SECRET);
         yield User_1.default.findOneAndUpdate({ email: data.email }, { $set: { isVerfied: true } }, {});
-        res.sendFile(path_1.default.join(__dirname, '../view/verify.html'));
+        res.sendFile(path_1.default.join(__dirname, "../view/verify.html"));
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });

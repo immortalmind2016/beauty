@@ -13,40 +13,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserProducts = exports.addProductToUser = exports.getAll = exports.getOne = exports.edit = exports.deleteOne = exports.create = void 0;
-const module_1 = require("@npm-immortal-user/utils/module");
 const mongoose_1 = require("mongoose");
 const Product_1 = __importDefault(require("../model/Product"));
 const UserProduct_1 = __importDefault(require("../model/UserProduct"));
-const logger = module_1.getLogger('product', 'info');
+const logger_1 = require("../utils/logger");
 const create = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { brand, categorie, name, description, image, price, sliderImages, isRecommended } = req.body;
+        const { brand, category, name, description, image, price, sliderImages, isRecommended, } = req.body;
         const newProduct = {
             brand,
-            categorie,
+            category,
             name,
             description,
             image,
             price,
             sliderImages,
-            isRecommended
+            isRecommended,
         };
         const product = yield Product_1.default.create(newProduct);
         res.json({ product });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
 exports.create = create;
 const deleteOne = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield Product_1.default.deleteOne({ _id: req.body.id });
+        yield Product_1.default.deleteOne({ _id: req.params.productId });
         res.json({ sucess: true });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -57,7 +56,7 @@ const edit = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
         res.json({ sucess: true });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -69,7 +68,7 @@ const getOne = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
         res.json({ product });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -77,22 +76,25 @@ exports.getOne = getOne;
 const getAll = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
+        const { page } = req.params;
+        const limit = 20;
+        const skip = Number(page) * limit;
         let products = {};
         if (req.query.searchBy) {
             let filter = {
                 value: (_a = req.query) === null || _a === void 0 ? void 0 : _a.value,
-                searchBy: (_b = req.query) === null || _b === void 0 ? void 0 : _b.searchBy
+                searchBy: (_b = req.query) === null || _b === void 0 ? void 0 : _b.searchBy,
             };
             let filters = { [filter.searchBy]: filter.value };
-            products = yield Product_1.default.find(filters);
+            products = yield Product_1.default.find(filters).limit(limit).skip(skip);
         }
         else {
-            products = yield Product_1.default.find();
+            products = yield Product_1.default.find().limit(limit).skip(skip);
         }
         res.json({ products });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -102,23 +104,25 @@ const addProductToUser = (req, res, err) => __awaiter(void 0, void 0, void 0, fu
         const { _id } = req.user;
         yield UserProduct_1.default.create({
             user: mongoose_1.Types.ObjectId(req.user._id),
-            product: mongoose_1.Types.ObjectId(req.body.productId)
+            product: mongoose_1.Types.ObjectId(req.body.productId),
         });
         return res.json({ success: true });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
 exports.addProductToUser = addProductToUser;
 const getUserProducts = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const products = yield UserProduct_1.default.find({ user: req.params.userId }).populate('product');
+        const products = yield UserProduct_1.default.find({
+            user: req.params.userId,
+        }).populate("product");
         res.json({ products });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });

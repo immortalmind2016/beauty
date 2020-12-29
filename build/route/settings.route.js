@@ -7,7 +7,8 @@ const express_1 = __importDefault(require("express"));
 const settings_controller_1 = require("../controller/settings.controller");
 const PassportJwt_1 = __importDefault(require("../auth/PassportJwt"));
 const router = express_1.default.Router();
-router.post('/', PassportJwt_1.default.authenticate('admin-rule', { session: false }), settings_controller_1.setSettings);
-router.get('/:name', PassportJwt_1.default.authenticate('admin-rule', { session: false }), settings_controller_1.getSettings);
+router.post("/", PassportJwt_1.default.authenticate("admin-rule", { session: false }), settings_controller_1.setSettings);
+router.get("/homepage", settings_controller_1.homePage);
+router.get("/:name", PassportJwt_1.default.authenticate("admin-rule", { session: false }), settings_controller_1.getSettings);
 exports.default = router;
 //# sourceMappingURL=settings.route.js.map

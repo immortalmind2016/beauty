@@ -7,6 +7,10 @@ var RecommonedType;
     RecommonedType[RecommonedType["YES"] = 1] = "YES";
 })(RecommonedType || (RecommonedType = {}));
 const UserProduct = new mongoose_1.Schema({
+    isApproved: {
+        type: Boolean,
+        default: false
+    },
     user: {
         type: 'ObjectId',
         ref: 'User'

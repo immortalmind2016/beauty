@@ -13,21 +13,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserData = exports.login = exports.signUp = void 0;
-const module_1 = require("@npm-immortal-user/utils/module");
 const Admin_1 = __importDefault(require("../model/Admin"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const config_1 = __importDefault(require("../config"));
-const logger = module_1.getLogger('AdminController', 'info');
+const logger_1 = require("../utils/logger");
 const signUp = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password, type } = req.body;
         const newUser = { name, email, password, type };
         const user = yield new Admin_1.default(newUser).save();
-        logger.info(`New admin registered with email ${email}`);
+        logger_1.logger.info(`New admin registered with email ${email}`);
         res.status(200).json({ success: true });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -41,17 +40,17 @@ const login = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () 
                 const jwt = yield jsonwebtoken_1.default.sign({
                     _id: user.id,
                     email: user.email,
-                    name: user.name
+                    name: user.name,
                 }, config_1.default.JWT_SECRET);
-                logger.info(`success login as admin with email ${email} `);
+                logger_1.logger.info(`success login as admin with email ${email} `);
                 return res.json({ access_token: jwt });
             }
         }
-        logger.warn(`failed to login as admin with email ${email} `);
-        return res.status(401).json({ error: 'User not found' });
+        logger_1.logger.warn(`failed to login as admin with email ${email} `);
+        return res.status(401).json({ error: "User not found" });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });
@@ -61,11 +60,11 @@ const getUserData = (req, res, err) => __awaiter(void 0, void 0, void 0, functio
         const { _id } = req.user;
         const user = yield Admin_1.default.findOne({ _id });
         if (!user)
-            return res.status(401).json({ error: 'User not found' });
+            return res.status(401).json({ error: "User not found" });
         return res.json({ user });
     }
     catch (e) {
-        logger.error(e === null || e === void 0 ? void 0 : e.message);
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
     }
 });

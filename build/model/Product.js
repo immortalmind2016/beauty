@@ -8,22 +8,19 @@ var RecommonedType;
     RecommonedType[RecommonedType["YES"] = 1] = "YES";
 })(RecommonedType = exports.RecommonedType || (exports.RecommonedType = {}));
 const Product = new mongoose_1.Schema({
-    brand: { type: String },
+    brand: { name: String },
     image: { type: String, required: true },
     price: { type: Number, required: true },
     sliderImages: Array,
     name: { type: String, required: true },
     description: String,
-    rates: String,
+    rates: Number,
     isRecommended: {
         type: Boolean,
         default: RecommonedType.NO,
-        enum: Object.values(RecommonedType)
+        enum: Object.values(RecommonedType),
     },
-    categorie: {
-        type: mongoose_1.Types.ObjectId,
-        ref: 'Settings.categories'
-    }
+    category: { name: String, image: String },
 }, { timestamps: true });
-exports.default = mongoose_1.model('Product', Product);
+exports.default = mongoose_1.model("Product", Product);
 //# sourceMappingURL=Product.js.map

@@ -1,4 +1,5 @@
-import { RequestHandler } from 'express';
+import { RequestHandler } from "express";
 declare const setSettings: RequestHandler;
 declare const getSettings: RequestHandler;
-export { setSettings, getSettings };
+declare const homePage: RequestHandler;
+export { setSettings, getSettings, homePage };

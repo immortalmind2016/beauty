@@ -1,14 +1,16 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 export interface ProductSchema {
-    brand: String;
-    image: String;
-    price: Number;
-    sliderImages: String[];
-    name: String;
-    description: String;
-    rates?: String;
+    brand?: {
+        name: String;
+    };
+    image?: String;
+    price?: Number;
+    sliderImages?: String[];
+    name?: String;
+    description?: String;
+    rates?: Number;
     isRecommended?: RecommonedType;
-    categorie: {
+    category?: {
         name: String;
         image: String;
     };
