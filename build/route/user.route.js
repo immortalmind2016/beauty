@@ -8,7 +8,7 @@ const user_controller_1 = require("../controller/user.controller");
 const PassportJwt_1 = __importDefault(require("../auth/PassportJwt"));
 const router = express_1.default.Router();
 router.post("/signup", user_controller_1.signUp);
-router.get("/login", user_controller_1.login);
+router.post("/login", user_controller_1.login);
 router.get("/", PassportJwt_1.default.authenticate("user-rule", { session: false }), user_controller_1.getUserData);
 router.get("/verify-email", user_controller_1.verifyEmail);
 exports.default = router;

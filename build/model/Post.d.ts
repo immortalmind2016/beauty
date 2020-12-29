@@ -1,7 +1,9 @@
 import { Document } from "mongoose";
 export interface PostSchema {
-    image: string;
-    video: string;
+    image?: String;
+    video?: String;
+    type: PostType;
+    user: String;
 }
 export declare enum PostType {
     VIDEO = 0,

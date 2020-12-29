@@ -8,7 +8,6 @@ var PostType;
     PostType[PostType["IMAGE"] = 1] = "IMAGE";
 })(PostType = exports.PostType || (exports.PostType = {}));
 const Post = new mongoose_1.Schema({
-    brand: { type: String },
     image: { type: String, required: true },
     video: String,
     type: {
@@ -18,7 +17,7 @@ const Post = new mongoose_1.Schema({
     },
     user: {
         type: mongoose_1.Types.ObjectId,
-        ref: "String",
+        ref: "User",
     },
 }, { timestamps: true });
 exports.default = mongoose_1.model("Post", Post);
