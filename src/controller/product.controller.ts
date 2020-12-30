@@ -1,6 +1,7 @@
 import { getLogger } from "@npm-immortal-user/utils/module";
 import { RequestHandler } from "express";
 import { Types } from "mongoose";
+import config from "../config";
 import { UserReq } from "../auth/PassportJwt";
 import Product, {
   ProductDocument,
@@ -77,7 +78,7 @@ interface Filter {
 const getAll: RequestHandler = async (req, res, err) => {
   try {
     const { page } = req.params;
-    const limit = 20;
+    const limit = config.webLimit;
     const skip = Number(page) * limit;
     let products = {};
     if (req.query.searchBy) {

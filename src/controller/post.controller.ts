@@ -1,5 +1,5 @@
 import Post, { PostSchema } from "../model/Post";
-
+import config from "../config";
 const editPost = async (req, res, err) => {
   try {
     const { _id: user } = req.user;
@@ -34,7 +34,7 @@ const deletePost = async (req, res, err) => {
 };
 const getUserPosts = async (req, res, err) => {
   try {
-    const limit = 10;
+    const limit = config.mobileLimit;
     const skip = req.params.page * limit;
     const user = req.params.userId;
     const posts = await Post.find({ user }).limit(limit).skip(skip);
