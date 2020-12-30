@@ -37,8 +37,13 @@ const getUserPosts = async (req, res, err) => {
     const limit = config.mobileLimit;
     const skip = req.params.page * limit;
     const user = req.params.userId;
-    const posts = await Post.find({ user }).limit(limit).skip(skip);
-    res.json({ posts });
+    const results = await Promise.all([
+      Post.find({ user }).limit(limit).skip(skip),
+      Post.find({ user }).count(),
+    ]);
+    const posts = results[0];
+    const totalResults = results[1];
+    res.json({ posts, totalResults });
   } catch (e) {
     res.status(501).json({ error: e?.message });
   }

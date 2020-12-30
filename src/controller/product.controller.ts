@@ -81,17 +81,26 @@ const getAll: RequestHandler = async (req, res, err) => {
     const limit = config.webLimit;
     const skip = Number(page) * limit;
     let products = {};
+    let results = [];
     if (req.query.searchBy) {
       let filter: Filter = {
         value: req.query?.value as string,
         searchBy: req.query?.searchBy as string,
       };
       let filters = { [filter.searchBy]: filter.value };
-      products = await Product.find(filters).limit(limit).skip(skip);
+      results = await Promise.all([
+        await Product.find(filters).limit(limit).skip(skip),
+        Product.find().count(),
+      ]);
     } else {
-      products = await Product.find().limit(limit).skip(skip);
+      results = await Promise.all([
+        Product.find().limit(limit).skip(skip),
+        Product.find().count(),
+      ]);
     }
-    res.json({ products });
+    products = results[0];
+
+    res.json({ products, totalResults: results[1] });
   } catch (e) {
     logger.error(e?.message);
     res.status(501).json({ error: e?.message });
