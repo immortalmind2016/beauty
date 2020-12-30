@@ -10,8 +10,10 @@
     "build:ts": "tsc -p tsconfig.json",
     "watch": "concurrently yarn:watch:*",
     "watch:ts": "nodemon -w src -e ts -x yarn start:dev",
-    "db:clean":"ts-node src/test/clear.ts",
-    "db:gen":"ts-node src/test/generator.ts"
+    "db:clean": "ts-node src/test/clear.ts",
+    "db:gen": "ts-node src/test/generator.ts",
+    "img:clean":"ts-node src/test/imageCleaner.ts"
+
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +32,7 @@
     "faker": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.8",
+    "multer": "^1.4.2",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "tsc": "^1.20150623.0",

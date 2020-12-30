@@ -6,6 +6,7 @@ import product from "./route/product.route";
 import settings from "./route/settings.route";
 import cart from "./route/cart.route";
 import post from "./route/post.route";
+import services from "./route/services.route";
 
 import config from "./config";
 import bodyParser from "body-parser";
@@ -14,7 +15,7 @@ import { connect } from "mongoose";
 connect(config.DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 const app = express();
 app.use(bodyParser.json());
-
+app.use(express.static("public"));
 app.use(function (req, res, next) {
   var allowedOrigins = [
     "https://8fib4t1ccaof.loclx.io",
@@ -58,6 +59,7 @@ app.use("/api/cart", cart);
 app.use("/api/product", product);
 app.use("/api/settings", settings);
 app.use("/api/post", post);
+app.use("/api/services", services);
 
 const PORT = process.env.PORT || 5000;
 //const logger = getLogger('server', 'info');
