@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserProducts = exports.addProductToUser = exports.getAll = exports.getOne = exports.edit = exports.deleteOne = exports.create = void 0;
 const mongoose_1 = require("mongoose");
+const config_1 = __importDefault(require("../config"));
 const Product_1 = __importDefault(require("../model/Product"));
 const UserProduct_1 = __importDefault(require("../model/UserProduct"));
 const logger_1 = require("../utils/logger");
@@ -77,21 +78,29 @@ const getAll = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
     var _a, _b;
     try {
         const { page } = req.params;
-        const limit = 20;
+        const limit = config_1.default.webLimit;
         const skip = Number(page) * limit;
         let products = {};
+        let results = [];
         if (req.query.searchBy) {
             let filter = {
                 value: (_a = req.query) === null || _a === void 0 ? void 0 : _a.value,
                 searchBy: (_b = req.query) === null || _b === void 0 ? void 0 : _b.searchBy,
             };
             let filters = { [filter.searchBy]: filter.value };
-            products = yield Product_1.default.find(filters).limit(limit).skip(skip);
+            results = yield Promise.all([
+                yield Product_1.default.find(filters).limit(limit).skip(skip),
+                Product_1.default.find().count(),
+            ]);
         }
         else {
-            products = yield Product_1.default.find().limit(limit).skip(skip);
+            results = yield Promise.all([
+                Product_1.default.find().limit(limit).skip(skip),
+                Product_1.default.find().count(),
+            ]);
         }
-        res.json({ products });
+        products = results[0];
+        res.json({ products, totalResults: results[1], limit });
     }
     catch (e) {
         logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);

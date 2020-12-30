@@ -26,31 +26,32 @@ const User = new mongoose_1.Schema({
     phone: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    image: { type: String, required: true },
     type: {
         type: Number,
         default: UserType.USER,
-        required: true
+        required: true,
     },
     isVerfied: {
         type: Boolean,
-        default: 0
+        default: 0,
     },
     isFacebook: {
         type: Boolean,
-        default: 0
+        default: 0,
     },
-    salt: String
+    salt: String,
 }, {
     timestamps: true,
     toJSON: {
         transform: function (doc, ret) {
             delete ret.password;
             delete ret.salt;
-        }
-    }
+        },
+    },
 });
 //HOOK
-User.pre('save', function (next) {
+User.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         // if(this.isModified("password")){
         try {
@@ -67,12 +68,12 @@ User.pre('save', function (next) {
 User.methods.checkPassword = function (textPassword) {
     return __awaiter(this, void 0, void 0, function* () {
         //.methods called on instance
-        console.log('PASSWORD', this.password);
+        console.log("PASSWORD", this.password);
         const hashed = yield bcrypt_1.default.hash(textPassword, this.salt);
-        console.log('SALT', this.salt);
-        console.log('Hashed', hashed);
+        console.log("SALT", this.salt);
+        console.log("Hashed", hashed);
         return hashed == this.password;
     });
 };
-exports.default = mongoose_1.model('User', User);
+exports.default = mongoose_1.model("User", User);
 //# sourceMappingURL=User.js.map

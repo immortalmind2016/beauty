@@ -25,6 +25,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserPosts = exports.deletePost = exports.editPost = exports.createPost = void 0;
 const Post_1 = __importDefault(require("../model/Post"));
+const config_1 = __importDefault(require("../config"));
 const editPost = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { _id: user } = req.user;
@@ -64,11 +65,16 @@ const deletePost = (req, res, err) => __awaiter(void 0, void 0, void 0, function
 exports.deletePost = deletePost;
 const getUserPosts = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const limit = 10;
+        const limit = config_1.default.mobileLimit;
         const skip = req.params.page * limit;
         const user = req.params.userId;
-        const posts = yield Post_1.default.find({ user }).limit(limit).skip(skip);
-        res.json({ posts });
+        const results = yield Promise.all([
+            Post_1.default.find({ user }).limit(limit).skip(skip),
+            Post_1.default.find({ user }).count(),
+        ]);
+        const posts = results[0];
+        const totalResults = results[1];
+        res.json({ posts, totalResults, limit });
     }
     catch (e) {
         res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });

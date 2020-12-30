@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document } from "mongoose";
 export interface CartSchema extends Document {
 }
 declare const _default: import("mongoose").Model<CartSchema>;

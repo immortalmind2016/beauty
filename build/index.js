@@ -10,6 +10,7 @@ const product_route_1 = __importDefault(require("./route/product.route"));
 const settings_route_1 = __importDefault(require("./route/settings.route"));
 const cart_route_1 = __importDefault(require("./route/cart.route"));
 const post_route_1 = __importDefault(require("./route/post.route"));
+const services_route_1 = __importDefault(require("./route/services.route"));
 const config_1 = __importDefault(require("./config"));
 const body_parser_1 = __importDefault(require("body-parser"));
 require("./utils/sendgrid");
@@ -17,6 +18,7 @@ const mongoose_1 = require("mongoose");
 mongoose_1.connect(config_1.default.DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 const app = express_1.default();
 app.use(body_parser_1.default.json());
+app.use(express_1.default.static("public"));
 app.use(function (req, res, next) {
     var allowedOrigins = [
         "https://8fib4t1ccaof.loclx.io",
@@ -55,6 +57,7 @@ app.use("/api/cart", cart_route_1.default);
 app.use("/api/product", product_route_1.default);
 app.use("/api/settings", settings_route_1.default);
 app.use("/api/post", post_route_1.default);
+app.use("/api/services", services_route_1.default);
 const PORT = process.env.PORT || 5000;
 //const logger = getLogger('server', 'info');
 //logger.info('Application will start');

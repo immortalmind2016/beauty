@@ -18,8 +18,11 @@ const Cart_1 = __importDefault(require("../model/Cart"));
 const showCart = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { _id } = req.user;
-        const cart = yield Cart_1.default.findOne({ user: _id }).populate('products.product', 'name image price');
-        res.json({ cart });
+        const cart = yield Cart_1.default.findOne({ user: _id }).populate("products.product", "name image price");
+        const totalMoney = cart.products.reduce((acc, newOne) => {
+            return (acc.product.price * acc.count + newOne.product.price * newOne.count);
+        });
+        res.json({ cart, totalMoney });
     }
     catch (e) {
         logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
@@ -33,8 +36,8 @@ const addProduct = (req, res, err) => __awaiter(void 0, void 0, void 0, function
         const { products } = req.body;
         const cart = yield Cart_1.default.findOneAndUpdate({ user: _id }, {
             $set: {
-                products
-            }
+                products,
+            },
         }, { new: true, upsert: true });
         res.json({ cart });
     }

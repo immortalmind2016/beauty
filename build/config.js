@@ -21,10 +21,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const envalid_1 = __importStar(require("envalid"));
 const config = envalid_1.default.cleanEnv(process.env, {
-    JWT_SECRET: envalid_1.str({ default: 'secret' }),
+    JWT_SECRET: envalid_1.str({ default: "secret" }),
     SENDGRID_API_KEY: envalid_1.str({}),
     URL: envalid_1.str(),
-    DB_URL: envalid_1.str()
+    DB_URL: envalid_1.str(),
+    mobileLimit: envalid_1.num({ default: 10 }),
+    webLimit: envalid_1.num({ default: 20 }),
+    ROOT_URL: envalid_1.url({ default: "http://localhost:5000" }),
 });
 exports.default = config;
 //# sourceMappingURL=config.js.map
