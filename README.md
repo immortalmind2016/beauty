@@ -42,8 +42,8 @@ root folder
 │ └───route > `app routes`
 │ └───utils > `logger,sendgrid`
 │ └───view > `verficiation`
-│ └───config.ts >
-│ └───index.ts
+│ └───config.ts
+│ └───index.ts `main ts file`
 ├───.env > `add all your env variables`
 ```
 
