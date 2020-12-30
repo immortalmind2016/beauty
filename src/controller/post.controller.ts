@@ -43,7 +43,7 @@ const getUserPosts = async (req, res, err) => {
     ]);
     const posts = results[0];
     const totalResults = results[1];
-    res.json({ posts, totalResults });
+    res.json({ posts, totalResults, limit });
   } catch (e) {
     res.status(501).json({ error: e?.message });
   }

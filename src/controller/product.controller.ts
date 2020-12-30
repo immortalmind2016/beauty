@@ -100,7 +100,7 @@ const getAll: RequestHandler = async (req, res, err) => {
     }
     products = results[0];
 
-    res.json({ products, totalResults: results[1] });
+    res.json({ products, totalResults: results[1], limit });
   } catch (e) {
     logger.error(e?.message);
     res.status(501).json({ error: e?.message });
