@@ -4,6 +4,7 @@ export interface CartSchema extends Document {}
 export enum SettingType {
   CATEGORIES = "CATEGORIES",
   BRANDS = "BRANDS",
+  HOMESLIDER="HOMESLIDER",
   ABOUT = "ABOUT",
   USAGEPOLICY = "USAGEPOLICY",
   FAQ = "FAQ",
@@ -19,9 +20,19 @@ const Settings = new Schema(
       enum: Object.values(SettingType),
     },
     htmlDescription: String,
+    homeSlider:{
+      type:[new Schema({
+      
+        image:String,
+        name:String
+      
+    })],
+    default:[]
+    },
     brands: [
       {
         name: { type: String, unique: true },
+        image:String
       },
     ],
     categories: [

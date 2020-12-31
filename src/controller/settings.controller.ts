@@ -42,7 +42,7 @@ const getSettings: RequestHandler = async (req, res, err) => {
 const homePage: RequestHandler = async (req, res, err) => {
   let promiseArray;
   promiseArray = [
-    Settings.find({ $or: [{ name: "CATEGORIES" }, { name: "BRANDS" }] }),
+    Settings.find({ $or: [{ name: "CATEGORIES" }, { name: "BRANDS" },{name:"HOMESLIDER"}] }),
     Product.find({ isRecommended: RecommonedType.YES }).limit(5),
   ];
   try {
@@ -54,10 +54,14 @@ const homePage: RequestHandler = async (req, res, err) => {
     let brands = results[0]?.filter((setting) => {
       return setting.name == "BRANDS";
     })[0]?.brands;
+    let homeSlider = results[0]?.filter((setting) => {
+      return setting.name == "HOMESLIDER";
+    })[0]?.homeSlider;
     let recommended = results[1];
     res.json({
       categories,
       brands,
+      homeSlider,
       recommended,
     });
   } catch (e) {
