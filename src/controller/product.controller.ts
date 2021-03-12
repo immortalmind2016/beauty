@@ -138,7 +138,12 @@ const getAll: RequestHandler = async (req, res, err) => {
       };
     }, {});
     console.log(reviews);
-    products = products.map(() => {});
+    products = products.map((product) => {
+      return {
+        ...product,
+        review: reviews[product._id],
+      };
+    });
     res.json({ products, totalResults: results[1], limit });
   } catch (e) {
     logger.error(e?.message);
@@ -180,8 +185,14 @@ const reviewProduct: RequestHandler = async (
     new Review({
       product: req.params.productId,
       ...req.body,
+    }).save((err) => {
+      if (err) {
+        logger.error(err?.message);
+        return res.status(501).json({ error: err?.message });
+      }
+
+      res.json({ success: true });
     });
-    res.json({ success: true });
   } catch (e) {
     logger.error(e?.message);
     res.status(501).json({ error: e?.message });

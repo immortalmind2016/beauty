@@ -20,6 +20,5 @@ const Review = new Schema<ReviewSchema>(
   },
   { timestamps: true }
 );
-Review.index({ user: 1, product: 1 }, { unique: true });
 export interface ReviewDocument extends ReviewSchema, Document {}
 export default model<ReviewDocument>("Review", Review);
