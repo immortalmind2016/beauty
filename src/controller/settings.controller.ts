@@ -43,7 +43,7 @@ const homePage: RequestHandler = async (req, res, err) => {
   let promiseArray;
   promiseArray = [
     Settings.find({ $or: [{ name: "CATEGORIES" }, { name: "BRANDS" },{name:"HOMESLIDER"}] }),
-    Product.find({ isRecommended: RecommonedType.YES }).limit(5),
+    Product.find({ isRecommended: RecommonedType.YES },"").limit(5),
   ];
   try {
     let results: any[][] = await Promise.all(promiseArray);

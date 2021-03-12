@@ -10,11 +10,13 @@ const showCart: RequestHandler = async (req, res, err) => {
       "products.product",
       "name image price"
     );
-    const totalMoney = cart.products.reduce((acc, newOne) => {
-      return (
-        acc.product.price * acc.count + newOne.product.price * newOne.count
-      );
-    });
+    let totalMoney = 0;
+    if (cart.products.length > 0)
+      totalMoney = cart.products.reduce((acc, newOne) => {
+        return (
+          acc.product.price * acc.count + newOne.product.price * newOne.count
+        );
+      });
     res.json({ cart, totalMoney });
   } catch (e) {
     logger.error(e?.message);
