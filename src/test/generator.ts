@@ -13,12 +13,12 @@ let counter = 0;
 while (counter != 5) {
   const category: { name: String; image: String } = {
     name: faker.commerce.department(),
-    image: faker.image.imageUrl(),
+    image: faker.image.imageUrl().replace("http", "https"),
   };
 
   let brand = {
     name: faker.company.companyName(),
-    image: faker.image.imageUrl(),
+    image: faker.image.imageUrl().replace("http", "https"),
   };
   if (
     brands.findIndex((_brand) => _brand.name == brand.name) > -1 ||
@@ -29,20 +29,20 @@ while (counter != 5) {
   } else {
     counter++;
   }
-  homeSlider.push({ image: faker.image.imageUrl() });
+  homeSlider.push({ image: faker.image.imageUrl().replace("http", "https") });
   brands.push(brand);
   categories.push(category);
 
   const sliderImages = [
-    faker.image.imageUrl(),
-    faker.image.imageUrl(),
-    faker.image.imageUrl(),
-    faker.image.imageUrl(),
+    faker.image.imageUrl().replace("http", "https"),
+    faker.image.imageUrl().replace("http", "https"),
+    faker.image.imageUrl().replace("http", "https"),
+    faker.image.imageUrl().replace("http", "https"),
   ];
   const product: ProductSchema = {
     brand,
     category,
-    image: faker.image.imageUrl(),
+    image: faker.image.imageUrl().replace("http", "https"),
     //@ts-ignore
     isRecommended: faker.random.boolean(),
     description: faker.commerce.productDescription(),

@@ -1,5 +1,6 @@
-import { Schema, Document, model, Types } from "mongoose";
+import { Schema, Document, model } from "mongoose";
 import bcrypt from "bcrypt";
+let Types = Schema.Types;
 export interface CartSchema extends Document {}
 enum CartStatus {
   ORDERED = 0,
@@ -9,11 +10,12 @@ const Cart = new Schema<CartSchema>(
   {
     user: {
       type: Types.ObjectId,
+      required: true,
       ref: "User",
     },
     products: [
       {
-        product: {
+        productId: {
           type: Types.ObjectId,
           ref: "Product",
         },

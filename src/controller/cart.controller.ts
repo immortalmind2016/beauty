@@ -7,16 +7,14 @@ const showCart: RequestHandler = async (req, res, err) => {
     const { _id }: { _id: string } = req.user as { _id: string };
 
     const cart: any = await Cart.findOne({ user: _id }).populate(
-      "products.product",
+      "products.productId",
       "name image price"
     );
-    let totalMoney = 0;
-    if (cart.products.length > 0)
-      totalMoney = cart.products.reduce((acc, newOne) => {
-        return (
-          acc.product.price * acc.count + newOne.product.price * newOne.count
-        );
-      });
+    const totalMoney = cart.products.reduce((acc, newOne) => {
+      return (
+        acc.product.price * acc.count + newOne.product.price * newOne.count
+      );
+    });
     res.json({ cart, totalMoney });
   } catch (e) {
     logger.error(e?.message);
