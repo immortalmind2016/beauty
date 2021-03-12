@@ -140,7 +140,7 @@ const getAll: RequestHandler = async (req, res, err) => {
     console.log(reviews);
     products = products.map((product) => {
       return {
-        ...product,
+        ...product._doc,
         review: reviews[product._id],
       };
     });
