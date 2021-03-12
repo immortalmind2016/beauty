@@ -9,6 +9,7 @@ import {
   getOne,
   addProductToUser,
   getUserProducts,
+  reviewProduct,
 } from "../controller/product.controller";
 import { UserType } from "../model/User";
 const router = express.Router();
@@ -35,6 +36,7 @@ router.post(
   PassportJwt.authenticate("user-rule", { session: false }),
   addProductToUser
 );
+router.post("/review/:productId", reviewProduct);
 router.get(
   "/user/:userId",
 
@@ -45,4 +47,5 @@ router.get(
 
   getOne
 );
+
 export default router;

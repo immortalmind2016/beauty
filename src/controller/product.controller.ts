@@ -1,5 +1,5 @@
 import { getLogger } from "@npm-immortal-user/utils/module";
-import { RequestHandler } from "express";
+import { Request, RequestHandler, Response } from "express";
 import { Types } from "mongoose";
 import config from "../config";
 import { UserReq } from "../auth/PassportJwt";
@@ -10,6 +10,7 @@ import Product, {
 } from "../model/Product";
 import UserProduct from "../model/UserProduct";
 import { logger } from "../utils/logger";
+import Review from "../model/Review";
 const create: RequestHandler = async (req, res, err) => {
   try {
     const {
@@ -80,7 +81,7 @@ const getAll: RequestHandler = async (req, res, err) => {
     const { page } = req.params;
     const limit = config.webLimit;
     const skip = Number(page) * limit;
-    let products = {};
+    let products = [];
     let results = [];
     if (req.query.searchBy) {
       let filter: Filter = {
@@ -126,7 +127,18 @@ const getAll: RequestHandler = async (req, res, err) => {
       ]);
     }
     products = results[0];
-
+    let reviews;
+    reviews = await Review.find({
+      product: { $in: products.map((product) => product._id) },
+    });
+    reviews = reviews.reduce((acc, current) => {
+      return {
+        ...acc,
+        [current._id]: current,
+      };
+    }, {});
+    console.log(reviews);
+    products = products.map(() => {});
     res.json({ products, totalResults: results[1], limit });
   } catch (e) {
     logger.error(e?.message);
@@ -159,6 +171,22 @@ const getUserProducts: RequestHandler = async (req: any, res, err) => {
     res.status(501).json({ error: e?.message });
   }
 };
+const reviewProduct: RequestHandler = async (
+  req: Request,
+  res: Response,
+  err
+) => {
+  try {
+    new Review({
+      product: req.params.productId,
+      ...req.body,
+    });
+    res.json({ success: true });
+  } catch (e) {
+    logger.error(e?.message);
+    res.status(501).json({ error: e?.message });
+  }
+};
 export {
   create,
   deleteOne,
@@ -167,4 +195,5 @@ export {
   getAll,
   addProductToUser,
   getUserProducts,
+  reviewProduct,
 };

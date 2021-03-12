@@ -8,7 +8,7 @@ const showCart: RequestHandler = async (req, res, err) => {
 
     const cart: any = await Cart.findOne({ user: _id }).populate(
       "products.product",
-      "name image price"
+      "name image price count"
     );
     const totalMoney = cart.products.reduce((acc, newOne) => {
       return (
@@ -26,7 +26,7 @@ const addProduct: RequestHandler = async (req, res, err) => {
     const { _id }: { _id: string } = req.user as { _id: string };
     let { products } = req.body;
     products = products.map((product) => ({
-      ...products,
+      ...product,
       product: product.productId,
     }));
     const cart = await Cart.findOneAndUpdate(
