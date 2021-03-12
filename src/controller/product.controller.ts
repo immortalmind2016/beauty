@@ -134,7 +134,7 @@ const getAll: RequestHandler = async (req, res, err) => {
     reviews = reviews.reduce((acc, current) => {
       return {
         ...acc,
-        [current._id]: current,
+        [current.product]: current,
       };
     }, {});
     console.log(reviews);
