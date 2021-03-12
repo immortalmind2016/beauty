@@ -141,7 +141,7 @@ const getAll: RequestHandler = async (req, res, err) => {
     products = products.map((product) => {
       return {
         ...product._doc,
-        review: reviews[product._id],
+        review: reviews[product._id] || {},
       };
     });
     res.json({ products, totalResults: results[1], limit });
