@@ -8,25 +8,31 @@ connect(config.DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 const categories = [];
 const products = [];
 const brands = [];
+const homeSlider = [];
 let counter = 0;
-while (counter != 10) {
+while (counter != 5) {
   const category: { name: String; image: String } = {
     name: faker.commerce.department(),
     image: faker.image.imageUrl(),
   };
-  let brand = { name: faker.company.companyName() };
+
+  let brand = {
+    name: faker.company.companyName(),
+    image: faker.image.imageUrl(),
+  };
   if (
     brands.findIndex((_brand) => _brand.name == brand.name) > -1 ||
     categories.findIndex((_cat) => _cat.name == category.name) > -1
   ) {
     console.log("REPEAT");
     continue;
+  } else {
+    counter++;
   }
+  homeSlider.push({ image: faker.image.imageUrl() });
   brands.push(brand);
-  console.log(brand);
   categories.push(category);
 
-  counter++;
   const sliderImages = [
     faker.image.imageUrl(),
     faker.image.imageUrl(),
@@ -58,15 +64,20 @@ while (counter != 10) {
     name: SettingType;
     brands: any[];
   } = { name: SettingType.BRANDS, brands };
-
+  let slider: {
+    name: SettingType;
+    homeSlider: any[];
+  } = { name: SettingType.HOMESLIDER, homeSlider };
   console.log("START GENERATOR");
-  console.log(bran);
   try {
     await Promise.all([
       Settings.findOneAndUpdate({ name: SettingType.CATEGORIES }, cat, {
         upsert: true,
       }),
       Settings.findOneAndUpdate({ name: SettingType.BRANDS }, bran, {
+        upsert: true,
+      }),
+      Settings.findOneAndUpdate({ name: SettingType.HOMESLIDER }, slider, {
         upsert: true,
       }),
     ]);

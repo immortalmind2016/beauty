@@ -87,15 +87,42 @@ const getAll: RequestHandler = async (req, res, err) => {
         value: req.query?.value as string,
         searchBy: req.query?.searchBy as string,
       };
+
       let filters = { [filter.searchBy]: filter.value };
+      let catBrandFlters = {};
+      if (req.query.category) {
+        //@ts-ignore
+        filters = { ...filters, ["category.name"]: req.query.category };
+        catBrandFlters = {
+          ...catBrandFlters,
+          ["category.name"]: req.query.category,
+        };
+      }
+      if (req.query.brand) {
+        //@ts-ignore
+        filters = { ...filters, ["brand.name"]: req.query.brand };
+        catBrandFlters = {
+          ...catBrandFlters,
+          ["category.name"]: req.query.brand,
+        };
+      }
       results = await Promise.all([
         await Product.find(filters).limit(limit).skip(skip),
-        Product.find().count(),
+        Product.find(catBrandFlters).count(),
       ]);
     } else {
+      let filters = {};
+      if (req.query.category) {
+        //@ts-ignore
+        filters = { ...filters, ["category.name"]: req.query.category };
+      }
+      if (req.query.brand) {
+        //@ts-ignore
+        filters = { ...filters, ["brand.name"]: req.query.category };
+      }
       results = await Promise.all([
-        Product.find().limit(limit).skip(skip),
-        Product.find().count(),
+        Product.find(filters).limit(limit).skip(skip),
+        Product.find(filters).count(),
       ]);
     }
     products = results[0];
@@ -106,6 +133,7 @@ const getAll: RequestHandler = async (req, res, err) => {
     res.status(501).json({ error: e?.message });
   }
 };
+
 const addProductToUser: RequestHandler = async (req: any, res, err) => {
   try {
     const { _id }: { _id: string } = req.user as { _id: string };

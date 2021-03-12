@@ -1,5 +1,5 @@
 # beauty
-
+E-commerce
 ## Setup
 
 > yarn install
