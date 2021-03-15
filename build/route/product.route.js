@@ -13,6 +13,7 @@ router.patch("/", PassportJwt_1.default.authenticate("admin-rule", { session: fa
 router.delete("/:productId", PassportJwt_1.default.authenticate("admin-rule", { session: false }), product_controller_1.deleteOne);
 router.post("/", PassportJwt_1.default.authenticate("admin-rule", { session: false }), product_controller_1.create);
 router.post("/assign", PassportJwt_1.default.authenticate("user-rule", { session: false }), product_controller_1.addProductToUser);
+router.post("/review/:productId", PassportJwt_1.default.authenticate("user-rule", { session: false }), product_controller_1.reviewProduct);
 router.get("/user/:userId", product_controller_1.getUserProducts);
 router.get("/:productId", product_controller_1.getOne);
 exports.default = router;

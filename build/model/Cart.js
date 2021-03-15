@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+let Types = mongoose_1.Schema.Types;
 var CartStatus;
 (function (CartStatus) {
     CartStatus[CartStatus["ORDERED"] = 0] = "ORDERED";
@@ -8,13 +9,14 @@ var CartStatus;
 })(CartStatus || (CartStatus = {}));
 const Cart = new mongoose_1.Schema({
     user: {
-        type: mongoose_1.Types.ObjectId,
+        type: Types.ObjectId,
+        required: true,
         ref: "User",
     },
     products: [
         {
             product: {
-                type: mongoose_1.Types.ObjectId,
+                type: Types.ObjectId,
                 ref: "Product",
             },
             count: Number,

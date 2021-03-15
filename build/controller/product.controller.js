@@ -12,12 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProducts = exports.addProductToUser = exports.getAll = exports.getOne = exports.edit = exports.deleteOne = exports.create = void 0;
+exports.reviewProduct = exports.getUserProducts = exports.addProductToUser = exports.getAll = exports.getOne = exports.edit = exports.deleteOne = exports.create = void 0;
 const mongoose_1 = require("mongoose");
 const config_1 = __importDefault(require("../config"));
 const Product_1 = __importDefault(require("../model/Product"));
 const UserProduct_1 = __importDefault(require("../model/UserProduct"));
 const logger_1 = require("../utils/logger");
+const Review_1 = __importDefault(require("../model/Review"));
 const create = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { brand, category, name, description, image, price, sliderImages, isRecommended, } = req.body;
@@ -80,7 +81,7 @@ const getAll = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
         const { page } = req.params;
         const limit = config_1.default.webLimit;
         const skip = Number(page) * limit;
-        let products = {};
+        let products = [];
         let results = [];
         if (req.query.searchBy) {
             let filter = {
@@ -88,18 +89,49 @@ const getAll = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
                 searchBy: (_b = req.query) === null || _b === void 0 ? void 0 : _b.searchBy,
             };
             let filters = { [filter.searchBy]: filter.value };
+            let catBrandFlters = {};
+            if (req.query.category) {
+                //@ts-ignore
+                filters = Object.assign(Object.assign({}, filters), { ["category.name"]: req.query.category });
+                catBrandFlters = Object.assign(Object.assign({}, catBrandFlters), { ["category.name"]: req.query.category });
+            }
+            if (req.query.brand) {
+                //@ts-ignore
+                filters = Object.assign(Object.assign({}, filters), { ["brand.name"]: req.query.brand });
+                catBrandFlters = Object.assign(Object.assign({}, catBrandFlters), { ["category.name"]: req.query.brand });
+            }
             results = yield Promise.all([
                 yield Product_1.default.find(filters).limit(limit).skip(skip),
-                Product_1.default.find().count(),
+                Product_1.default.find(catBrandFlters).count(),
             ]);
         }
         else {
+            let filters = {};
+            if (req.query.category) {
+                //@ts-ignore
+                filters = Object.assign(Object.assign({}, filters), { ["category.name"]: req.query.category });
+            }
+            if (req.query.brand) {
+                //@ts-ignore
+                filters = Object.assign(Object.assign({}, filters), { ["brand.name"]: req.query.category });
+            }
             results = yield Promise.all([
-                Product_1.default.find().limit(limit).skip(skip),
-                Product_1.default.find().count(),
+                Product_1.default.find(filters).limit(limit).skip(skip),
+                Product_1.default.find(filters).count(),
             ]);
         }
         products = results[0];
+        let reviews;
+        reviews = yield Review_1.default.find({
+            product: { $in: products.map((product) => product._id) },
+        });
+        reviews = reviews.reduce((acc, current) => {
+            return Object.assign(Object.assign({}, acc), { [current.product]: current });
+        }, {});
+        console.log(reviews);
+        products = products.map((product) => {
+            return Object.assign(Object.assign({}, product._doc), { review: reviews[product._id] || {} });
+        });
         res.json({ products, totalResults: results[1], limit });
     }
     catch (e) {
@@ -136,4 +168,21 @@ const getUserProducts = (req, res, err) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getUserProducts = getUserProducts;
+const reviewProduct = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { _id } = req.user;
+        new Review_1.default(Object.assign(Object.assign({ product: req.params.productId }, req.body), { user: _id })).save((err) => {
+            if (err) {
+                logger_1.logger.error(err === null || err === void 0 ? void 0 : err.message);
+                return res.status(501).json({ error: err === null || err === void 0 ? void 0 : err.message });
+            }
+            res.json({ success: true });
+        });
+    }
+    catch (e) {
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
+        res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
+    }
+});
+exports.reviewProduct = reviewProduct;
 //# sourceMappingURL=product.controller.js.map

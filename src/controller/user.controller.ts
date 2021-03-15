@@ -1,6 +1,6 @@
 import { getLogger } from "@npm-immortal-user/utils/module";
 import { Request, RequestHandler } from "express";
-import User, { UserSchema, UserDocument } from "../model/User";
+import User, { UserSchema, UserDocument, UserType } from "../model/User";
 import Jwt from "jsonwebtoken";
 import { sendMessage } from "../utils/sendgrid";
 import config from "../config";
@@ -86,6 +86,33 @@ const getUserData: RequestHandler = async (req, res, err) => {
     res.status(501).json({ error: e?.message });
   }
 };
+const updateUser: RequestHandler = async (req, res, err) => {
+  try {
+    const { _id } = req.user as { _id: string };
+    const user = await User.findOne({ _id });
+    const data = req.body;
+    if (!user) return res.status(401).json({ error: "User not found" });
+
+    return res.json({
+      user: await User.findOneAndUpdate({ _id }, { ...data }, { new: true }),
+    });
+  } catch (e) {
+    logger.error(e?.message);
+    res.status(501).json({ error: e?.message });
+  }
+};
+const getProfiles: RequestHandler = async (req, res, err) => {
+  try {
+    const users = await User.find({
+      $or: [{ type: UserType.INFLUENCER }, { type: UserType.DOCTOR }],
+    });
+
+    return res.json({ users });
+  } catch (e) {
+    logger.error(e?.message);
+    res.status(501).json({ error: e?.message });
+  }
+};
 const verifyEmail: RequestHandler = async (req, res, err) => {
   try {
     let token;
@@ -104,4 +131,4 @@ const verifyEmail: RequestHandler = async (req, res, err) => {
     res.status(501).json({ error: e?.message });
   }
 };
-export { signUp, login, getUserData, verifyEmail };
+export { signUp, login, getUserData, verifyEmail, getProfiles, updateUser };

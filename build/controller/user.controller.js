@@ -1,4 +1,23 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,8 +31,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyEmail = exports.getUserData = exports.login = exports.signUp = void 0;
-const User_1 = __importDefault(require("../model/User"));
+exports.updateUser = exports.getProfiles = exports.verifyEmail = exports.getUserData = exports.login = exports.signUp = void 0;
+const User_1 = __importStar(require("../model/User"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const sendgrid_1 = require("../utils/sendgrid");
 const config_1 = __importDefault(require("../config"));
@@ -90,6 +109,36 @@ const getUserData = (req, res, err) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getUserData = getUserData;
+const updateUser = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { _id } = req.user;
+        const user = yield User_1.default.findOne({ _id });
+        const data = req.body;
+        if (!user)
+            return res.status(401).json({ error: "User not found" });
+        return res.json({
+            user: yield User_1.default.findOneAndUpdate({ _id }, Object.assign({}, data), { new: true }),
+        });
+    }
+    catch (e) {
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
+        res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
+    }
+});
+exports.updateUser = updateUser;
+const getProfiles = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield User_1.default.find({
+            $or: [{ type: User_1.UserType.INFLUENCER }, { type: User_1.UserType.DOCTOR }],
+        });
+        return res.json({ users });
+    }
+    catch (e) {
+        logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
+        res.status(501).json({ error: e === null || e === void 0 ? void 0 : e.message });
+    }
+});
+exports.getProfiles = getProfiles;
 const verifyEmail = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let token;

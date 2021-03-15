@@ -17,8 +17,13 @@ const Review = new Schema<ReviewSchema>(
       type: Types.ObjectId,
       ref: "Product",
     },
+    user: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
+Review.index({ user: 1, product: 1 }, { unique: true });
 export interface ReviewDocument extends ReviewSchema, Document {}
 export default model<ReviewDocument>("Review", Review);

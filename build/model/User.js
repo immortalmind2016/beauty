@@ -26,7 +26,7 @@ const User = new mongoose_1.Schema({
     phone: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String },
     type: {
         type: Number,
         default: UserType.USER,

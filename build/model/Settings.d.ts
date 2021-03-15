@@ -4,6 +4,7 @@ export interface CartSchema extends Document {
 export declare enum SettingType {
     CATEGORIES = "CATEGORIES",
     BRANDS = "BRANDS",
+    HOMESLIDER = "HOMESLIDER",
     ABOUT = "ABOUT",
     USAGEPOLICY = "USAGEPOLICY",
     FAQ = "FAQ",

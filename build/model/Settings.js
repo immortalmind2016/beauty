@@ -6,6 +6,7 @@ var SettingType;
 (function (SettingType) {
     SettingType["CATEGORIES"] = "CATEGORIES";
     SettingType["BRANDS"] = "BRANDS";
+    SettingType["HOMESLIDER"] = "HOMESLIDER";
     SettingType["ABOUT"] = "ABOUT";
     SettingType["USAGEPOLICY"] = "USAGEPOLICY";
     SettingType["FAQ"] = "FAQ";
@@ -20,14 +21,24 @@ const Settings = new mongoose_1.Schema({
         enum: Object.values(SettingType),
     },
     htmlDescription: String,
+    homeSlider: {
+        type: [
+            new mongoose_1.Schema({
+                image: String,
+                name: String,
+            }),
+        ],
+        default: [],
+    },
     brands: [
         {
-            name: { type: String, unique: true },
+            name: { type: String },
+            image: String,
         },
     ],
     categories: [
         {
-            name: { type: String, unique: true },
+            name: { type: String },
             image: String,
         },
     ],

@@ -16,10 +16,12 @@ exports.addProduct = exports.showCart = void 0;
 const logger_1 = require("../utils/logger");
 const Cart_1 = __importDefault(require("../model/Cart"));
 const showCart = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const { _id } = req.user;
-        const cart = yield Cart_1.default.findOne({ user: _id }).populate("products.product", "name image price");
-        const totalMoney = cart.products.reduce((acc, newOne) => {
+        const cart = yield Cart_1.default.findOne({ user: _id }).populate("products.product");
+        console.log("🚀 ~ file: cart.controller.ts ~ line 13 ~ constshowCart:RequestHandler= ~ cart", cart);
+        const totalMoney = (_a = cart.products) === null || _a === void 0 ? void 0 : _a.reduce((acc, newOne) => {
             return (acc.product.price * acc.count + newOne.product.price * newOne.count);
         });
         res.json({ cart, totalMoney });
@@ -33,7 +35,8 @@ exports.showCart = showCart;
 const addProduct = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { _id } = req.user;
-        const { products } = req.body;
+        let { products } = req.body;
+        products = products.map((product) => (Object.assign(Object.assign({}, product), { product: product.productId })));
         const cart = yield Cart_1.default.findOneAndUpdate({ user: _id }, {
             $set: {
                 products,

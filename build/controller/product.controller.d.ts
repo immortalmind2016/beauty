@@ -6,4 +6,5 @@ declare const getOne: RequestHandler;
 declare const getAll: RequestHandler;
 declare const addProductToUser: RequestHandler;
 declare const getUserProducts: RequestHandler;
-export { create, deleteOne, edit, getOne, getAll, addProductToUser, getUserProducts, };
+declare const reviewProduct: RequestHandler;
+export { create, deleteOne, edit, getOne, getAll, addProductToUser, getUserProducts, reviewProduct, };

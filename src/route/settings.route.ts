@@ -16,7 +16,7 @@ router.get("/homepage", homePage);
 
 router.get(
   "/:name",
-  PassportJwt.authenticate("admin-rule", { session: false }),
+  PassportJwt.authenticate(["admin-rule", "user-rule"], { session: false }),
   getSettings
 );
 

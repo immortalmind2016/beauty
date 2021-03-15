@@ -66,11 +66,13 @@ const getSettings = (req, res, err) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.getSettings = getSettings;
 const homePage = (req, res, err) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f;
     let promiseArray;
     promiseArray = [
-        Settings_1.default.find({ $or: [{ name: "CATEGORIES" }, { name: "BRANDS" }] }),
-        Product_1.default.find({ isRecommended: Product_1.RecommonedType.YES }).limit(5),
+        Settings_1.default.find({
+            $or: [{ name: "CATEGORIES" }, { name: "BRANDS" }, { name: "HOMESLIDER" }],
+        }),
+        Product_1.default.find({ isRecommended: Product_1.RecommonedType.YES }, "description name price _id image").limit(5),
     ];
     try {
         let results = yield Promise.all(promiseArray);
@@ -81,10 +83,14 @@ const homePage = (req, res, err) => __awaiter(void 0, void 0, void 0, function* 
         let brands = (_d = (_c = results[0]) === null || _c === void 0 ? void 0 : _c.filter((setting) => {
             return setting.name == "BRANDS";
         })[0]) === null || _d === void 0 ? void 0 : _d.brands;
+        let homeSlider = (_f = (_e = results[0]) === null || _e === void 0 ? void 0 : _e.filter((setting) => {
+            return setting.name == "HOMESLIDER";
+        })[0]) === null || _f === void 0 ? void 0 : _f.homeSlider;
         let recommended = results[1];
         res.json({
             categories,
             brands,
+            homeSlider,
             recommended,
         });
     }

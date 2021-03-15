@@ -4,6 +4,7 @@ export interface UserSchema {
     phone: String;
     email: String;
     password: String;
+    image?: string;
     type?: UserType;
     isVerfied?: Boolean;
     isFacebook?: Boolean;

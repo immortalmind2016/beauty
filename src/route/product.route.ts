@@ -36,7 +36,11 @@ router.post(
   PassportJwt.authenticate("user-rule", { session: false }),
   addProductToUser
 );
-router.post("/review/:productId", reviewProduct);
+router.post(
+  "/review/:productId",
+  PassportJwt.authenticate("user-rule", { session: false }),
+  reviewProduct
+);
 router.get(
   "/user/:userId",
 

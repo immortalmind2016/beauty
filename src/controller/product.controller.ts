@@ -182,9 +182,12 @@ const reviewProduct: RequestHandler = async (
   err
 ) => {
   try {
+    const { _id }: { _id: string } = req.user as { _id: string };
+
     new Review({
       product: req.params.productId,
       ...req.body,
+      user: _id,
     }).save((err) => {
       if (err) {
         logger.error(err?.message);

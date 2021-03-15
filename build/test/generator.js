@@ -40,32 +40,38 @@ mongoose_1.connect(config_1.default.DB_URL, { useUnifiedTopology: true, useNewUr
 const categories = [];
 const products = [];
 const brands = [];
+const homeSlider = [];
 let counter = 0;
-while (counter != 10) {
+while (counter != 5) {
     const category = {
         name: faker_1.default.commerce.department(),
-        image: faker_1.default.image.imageUrl(),
+        image: faker_1.default.image.imageUrl().replace("http", "https"),
     };
-    let brand = { name: faker_1.default.company.companyName() };
+    let brand = {
+        name: faker_1.default.company.companyName(),
+        image: faker_1.default.image.imageUrl().replace("http", "https"),
+    };
     if (brands.findIndex((_brand) => _brand.name == brand.name) > -1 ||
         categories.findIndex((_cat) => _cat.name == category.name) > -1) {
         console.log("REPEAT");
         continue;
     }
+    else {
+        counter++;
+    }
+    homeSlider.push({ image: faker_1.default.image.imageUrl().replace("http", "https") });
     brands.push(brand);
-    console.log(brand);
     categories.push(category);
-    counter++;
     const sliderImages = [
-        faker_1.default.image.imageUrl(),
-        faker_1.default.image.imageUrl(),
-        faker_1.default.image.imageUrl(),
-        faker_1.default.image.imageUrl(),
+        faker_1.default.image.imageUrl().replace("http", "https"),
+        faker_1.default.image.imageUrl().replace("http", "https"),
+        faker_1.default.image.imageUrl().replace("http", "https"),
+        faker_1.default.image.imageUrl().replace("http", "https"),
     ];
     const product = {
         brand,
         category,
-        image: faker_1.default.image.imageUrl(),
+        image: faker_1.default.image.imageUrl().replace("http", "https"),
         //@ts-ignore
         isRecommended: faker_1.default.random.boolean(),
         description: faker_1.default.commerce.productDescription(),
@@ -83,14 +89,17 @@ while (counter != 10) {
         categories,
     };
     let bran = { name: Settings_1.SettingType.BRANDS, brands };
+    let slider = { name: Settings_1.SettingType.HOMESLIDER, homeSlider };
     console.log("START GENERATOR");
-    console.log(bran);
     try {
         yield Promise.all([
             Settings_1.default.findOneAndUpdate({ name: Settings_1.SettingType.CATEGORIES }, cat, {
                 upsert: true,
             }),
             Settings_1.default.findOneAndUpdate({ name: Settings_1.SettingType.BRANDS }, bran, {
+                upsert: true,
+            }),
+            Settings_1.default.findOneAndUpdate({ name: Settings_1.SettingType.HOMESLIDER }, slider, {
                 upsert: true,
             }),
         ]);

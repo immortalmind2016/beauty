@@ -5,6 +5,7 @@ export interface UserSchema {
   phone: String;
   email: String;
   password: String;
+  image?: string;
   type?: UserType;
   isVerfied?: Boolean;
   isFacebook?: Boolean;
@@ -23,7 +24,7 @@ const User: Schema = new Schema<UserDocument>(
     phone: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    image: { type: String, required: true },
+    image: { type: String },
     type: {
       type: Number,
       default: UserType.USER,

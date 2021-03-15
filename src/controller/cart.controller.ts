@@ -7,10 +7,13 @@ const showCart: RequestHandler = async (req, res, err) => {
     const { _id }: { _id: string } = req.user as { _id: string };
 
     const cart: any = await Cart.findOne({ user: _id }).populate(
-      "products.product",
-      "name image price count"
+      "products.product"
     );
-    const totalMoney = cart.products.reduce((acc, newOne) => {
+    console.log(
+      "🚀 ~ file: cart.controller.ts ~ line 13 ~ constshowCart:RequestHandler= ~ cart",
+      cart
+    );
+    const totalMoney = cart.products?.reduce((acc, newOne) => {
       return (
         acc.product.price * acc.count + newOne.product.price * newOne.count
       );
