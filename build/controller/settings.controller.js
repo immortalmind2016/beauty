@@ -72,7 +72,7 @@ const homePage = (req, res, err) => __awaiter(void 0, void 0, void 0, function* 
         Settings_1.default.find({
             $or: [{ name: "CATEGORIES" }, { name: "BRANDS" }, { name: "HOMESLIDER" }],
         }),
-        Product_1.default.find({ isRecommended: Product_1.RecommonedType.YES }, "description name price _id image").limit(5),
+        Product_1.default.find({ isRecommended: Product_1.RecommonedType.YES }).limit(5),
     ];
     try {
         let results = yield Promise.all(promiseArray);
