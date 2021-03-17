@@ -24,7 +24,7 @@ const signUp: RequestHandler = async (req: Request, res, err) => {
       try {
         await sendMessage(
           email,
-          `${config.URL}/user/verify-email?token=${emailToken}`,
+          `${config.URL}user/verify-email?token=${emailToken}`,
           user.name
         );
 
