@@ -125,7 +125,7 @@ const verifyEmail: RequestHandler = async (req, res, err) => {
       { $set: { isVerfied: true } },
       {}
     );
-    res.sendFile(path.join(__dirname, "../view/verify.html"));
+    res.sendFile(path.join(__dirname, "../../view/verify.html"));
   } catch (e) {
     logger.error(e?.message);
     res.status(501).json({ error: e?.message });

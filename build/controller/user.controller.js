@@ -51,7 +51,7 @@ const signUp = (req, res, err) => __awaiter(void 0, void 0, void 0, function* ()
         let emailSent = false;
         while (!emailSent) {
             try {
-                yield sendgrid_1.sendMessage(email, `${config_1.default.URL}/user/verify-email?token=${emailToken}`, user.name);
+                yield sendgrid_1.sendMessage(email, `${config_1.default.URL}user/verify-email?token=${emailToken}`, user.name);
                 logger_1.logger.info(`Verficiation Email sent to ${email}`);
                 emailSent = true;
             }
@@ -146,7 +146,7 @@ const verifyEmail = (req, res, err) => __awaiter(void 0, void 0, void 0, functio
         console.log(req.query);
         const data = jsonwebtoken_1.default.verify(token, config_1.default.JWT_SECRET);
         yield User_1.default.findOneAndUpdate({ email: data.email }, { $set: { isVerfied: true } }, {});
-        res.sendFile(path_1.default.join(__dirname, "../view/verify.html"));
+        res.sendFile(path_1.default.join(__dirname, "../../view/verify.html"));
     }
     catch (e) {
         logger_1.logger.error(e === null || e === void 0 ? void 0 : e.message);
